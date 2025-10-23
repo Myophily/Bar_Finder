@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kakao Map - Bar/Restaurant Finder</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Kakao Maps API will be loaded dynamically from config -->
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>술집 검색기 (Bar Finder)</h1>
+            <p>지도에서 영역을 그려 술집을 검색하세요</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="controls">
+                    <button id="drawRectangle" class="btn btn-primary">
+                        <span class="icon">▭</span> 사각형 그리기
+                    </button>
+                    <button id="drawPolygon" class="btn btn-primary">
+                        <span class="icon">⬡</span> 다각형 그리기
+                    </button>
+                    <button id="clearDrawing" class="btn btn-secondary">
+                        <span class="icon">✕</span> 초기화
+                    </button>
+                    <button id="searchButton" class="btn btn-success" disabled>
+                        <span class="icon">🔍</span> 검색 시작
+                    </button>
+                </div>
+
+                <div class="info-panel">
+                    <div id="regionInfo" class="info-box">
+                        <strong>선택된 영역:</strong>
+                        <span id="regionText">영역을 그려주세요</span>
+                    </div>
+                    <div id="gridInfo" class="info-box" style="display: none;">
+                        <strong>검색 그리드:</strong>
+                        <span id="gridText">-</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div id="progressContainer" style="display: none;">
+                    <div class="progress-bar">
+                        <div id="progressBar" class="progress-fill"></div>
+                    </div>
+                    <div id="progressText" class="progress-text">준비 중...</div>
+                </div>
+            </div>
+
+            <!-- Map Container -->
+            <div id="map"></div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2>검색 결과 <span id="resultCount" class="count-badge">0</span></h2>
+                    <div class="results-controls">
+                        <input
+                            type="text"
+                            id="searchFilter"
+                            placeholder="결과 내 검색..."
+                            class="search-input"
+                        >
+                        <button id="downloadCSV" class="btn btn-success">
+                            <span class="icon">⬇</span> CSV 다운로드
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="index">#</th>
+                                <th data-sort="place_name">장소명</th>
+                                <th data-sort="category_name">카테고리</th>
+                                <th data-sort="address_name">지번 주소</th>
+                                <th data-sort="road_address_name">도로명 주소</th>
+                                <th data-sort="phone">전화번호</th>
+                                <th data-sort="x">경도 (X)</th>
+                                <th data-sort="y">위도 (Y)</th>
+                                <th data-sort="place_url">URL</th>
+                                <th data-sort="distance">거리(m)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsBody">
+                            <!-- Results will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Powered by Kakao Map API | 최대 검색 결과는 API 제한에 따라 달라질 수 있습니다</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
