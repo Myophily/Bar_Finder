@@ -58,17 +58,8 @@ function initializeDrawingManager() {
     map: App.map,
     drawingMode: [
       kakao.maps.drawing.OverlayType.RECTANGLE,
-      kakao.maps.drawing.OverlayType.POLYGON,
     ],
     rectangleOptions: {
-      draggable: true,
-      removable: true,
-      editable: true,
-      strokeColor: "#39f",
-      fillColor: "#39f",
-      fillOpacity: 0.3,
-    },
-    polygonOptions: {
       draggable: true,
       removable: true,
       editable: true,
@@ -100,12 +91,6 @@ function setupEventListeners() {
       App.drawingManager.select(kakao.maps.drawing.OverlayType.RECTANGLE);
       this.classList.add("active");
     });
-
-  document.getElementById("drawPolygon").addEventListener("click", function () {
-    clearDrawing();
-    App.drawingManager.select(kakao.maps.drawing.OverlayType.POLYGON);
-    this.classList.add("active");
-  });
 
   document
     .getElementById("clearDrawing")
@@ -193,30 +178,6 @@ function getOverlayBounds(overlay, type) {
       center: {
         lat: (sw.getLat() + ne.getLat()) / 2,
         lng: (sw.getLng() + ne.getLng()) / 2,
-      },
-    };
-  } else if (type === kakao.maps.drawing.OverlayType.POLYGON) {
-    const path = overlay.getPath();
-    let minLat = 90,
-      maxLat = -90,
-      minLng = 180,
-      maxLng = -180;
-
-    path.forEach((point) => {
-      const lat = point.getLat();
-      const lng = point.getLng();
-      minLat = Math.min(minLat, lat);
-      maxLat = Math.max(maxLat, lat);
-      minLng = Math.min(minLng, lng);
-      maxLng = Math.max(maxLng, lng);
-    });
-
-    return {
-      sw: { lat: minLat, lng: minLng },
-      ne: { lat: maxLat, lng: maxLng },
-      center: {
-        lat: (minLat + maxLat) / 2,
-        lng: (minLng + maxLng) / 2,
       },
     };
   }
