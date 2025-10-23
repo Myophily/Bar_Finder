@@ -396,14 +396,11 @@ function renderTable(data) {
             <td>${escapeHtml(place.address_name || "-")}</td>
             <td>${escapeHtml(place.road_address_name || "-")}</td>
             <td>${escapeHtml(place.phone || "-")}</td>
-            <td>${place.x || "-"}</td>
-            <td>${place.y || "-"}</td>
             <td>${
               place.place_url
                 ? `<a href="${place.place_url}" target="_blank">링크</a>`
                 : "-"
             }</td>
-            <td>${place.distance || "-"}</td>
         `;
   });
 }
@@ -472,14 +469,9 @@ function sortTable(column) {
       return 0; // Will be regenerated
     }
 
-    // Handle numeric values
-    if (column === "x" || column === "y" || column === "distance") {
-      aVal = parseFloat(aVal) || 0;
-      bVal = parseFloat(bVal) || 0;
-    } else {
-      aVal = String(aVal || "").toLowerCase();
-      bVal = String(bVal || "").toLowerCase();
-    }
+    // Handle all values as strings
+    aVal = String(aVal || "").toLowerCase();
+    bVal = String(bVal || "").toLowerCase();
 
     if (aVal < bVal) return direction === "asc" ? -1 : 1;
     if (aVal > bVal) return direction === "asc" ? 1 : -1;
@@ -504,10 +496,7 @@ function downloadCSV() {
     "지번 주소",
     "도로명 주소",
     "전화번호",
-    "경도 (X)",
-    "위도 (Y)",
     "URL",
-    "거리(m)",
   ];
 
   // CSV rows
@@ -518,10 +507,7 @@ function downloadCSV() {
     place.address_name || "",
     place.road_address_name || "",
     place.phone || "",
-    place.x || "",
-    place.y || "",
     place.place_url || "",
-    place.distance || "",
   ]);
 
   // Combine headers and rows
