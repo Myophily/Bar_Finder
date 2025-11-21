@@ -60,7 +60,14 @@ Before running this application, you need:
 
 ### 1. Clone or Download the Files
 
-Make sure you have all the following files in your project directory:
+Make sure you have all the following files in your project
+
+```
+git clone https://github.com/Myophily/Bar_Finder.git
+cd Bar_Finder
+```
+
+directory:
 
 ```
 
@@ -364,4 +371,4 @@ For issues related to:
 
 ---
 
-Made by Myophily, Assisted by Claude 4.5 sonnet, 2025
+Made by Myophily, Assisted by Claude sonnet 4.5, 2025
