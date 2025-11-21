@@ -62,7 +62,7 @@ Before running this application, you need:
 
 Make sure you have all the following files in your project
 
-```
+```bash
 git clone https://github.com/Myophily/Bar_Finder.git
 cd Bar_Finder
 ```
@@ -71,7 +71,7 @@ directory:
 
 ```
 
-place\_search/
+place_search/
 ├── index.html
 ├── app.js
 ├── styles.css
