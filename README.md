@@ -6,7 +6,7 @@ A web application to search for bars and restaurants within a specified region u
 
 - **Interactive Map Interface**: Draw rectangles or polygons to define search regions
 - **Intelligent Grid Splitting**: Automatically divides large areas into 100m×100m cells for comprehensive coverage
-- **Smart Filtering**: Filters results for bar-related establishments (술집, 포차, 주점, 호프, etc.)
+- **Smart Filtering**: Filters results based on Kakao's category hierarchy (e.g., "음식점 > 술집")
 - **Comprehensive Results**: Collects all available data with automatic deduplication
 - **Sortable Table**: Click column headers to sort results
 - **Search Filter**: Filter displayed results by any field
@@ -63,12 +63,14 @@ Before running this application, you need:
 Make sure you have all the following files in your project directory:
 
 ```
-place_search/
+
+place\_search/
 ├── index.html
 ├── app.js
 ├── styles.css
 ├── config.js
 └── README.md
+
 ```
 
 ### 2. Configure API Keys
@@ -123,9 +125,9 @@ Then open your browser and navigate to: `http://localhost:8000`
 
 #### Option B: Using VS Code Live Server
 
-1. Install the "Live Server" extension in VS Code
-2. Right-click on `index.html`
-3. Select "Open with Live Server"
+1.  Install the "Live Server" extension in VS Code
+2.  Right-click on `index.html`
+3.  Select "Open with Live Server"
 
 #### Option C: Direct File Access (May have limitations)
 
@@ -162,7 +164,7 @@ After drawing, you'll see:
 - The system will:
   - Search each 100m×100m grid cell
   - Collect all pages of results (up to 45 pages per cell)
-  - Filter for bar-related establishments
+  - Filter for bar-related establishments using category matching
   - Automatically deduplicate results
 
 ### 4. Review Results
@@ -196,23 +198,14 @@ GRID_CELL_SIZE: 100,  // Size in meters (default: 100m)
 SEARCH_RADIUS: 71,  // Radius in meters (diagonal of 100m square / 2)
 ```
 
-### Bar Keywords
+### Bar Category Filter
 
-Add or remove keywords to filter results:
+Define the string to match within the `category_name` field. This supports hierarchical matching.
 
 ```javascript
-BAR_KEYWORDS: [
-  "술집",
-  "포차",
-  "주점",
-  "호프",
-  "맥주",
-  "선술집",
-  "이자카야",
-  "BAR",
-  "bar",
-  "Bar",
-];
+// Matches exact category and all subcategories
+// e.g., will match "음식점 > 술집 > 호프·요리주점"
+BAR_CATEGORY_FILTER: "음식점 > 술집",
 ```
 
 ### Default Map Settings
@@ -239,22 +232,22 @@ The Kakao Local API has the following limitations:
 
 ### Grid Search Strategy
 
-1. User draws a region (rectangle or polygon)
-2. Calculate bounding box (southwest and northeast corners)
-3. Divide into 100m×100m grid cells
-4. For each cell:
-   - Search from center point with 71m radius (covers entire cell)
-   - Paginate through all results
-   - Filter for bar-related establishments
-5. Combine all results and remove duplicates by place ID
-6. Display in sortable table
+1.  User draws a region (rectangle or polygon)
+2.  Calculate bounding box (southwest and northeast corners)
+3.  Divide into 100m×100m grid cells
+4.  For each cell:
+    - Search from center point with 71m radius (covers entire cell)
+    - Paginate through all results
+    - Filter results where `category_name` includes the `BAR_CATEGORY_FILTER` string
+5.  Combine all results and remove duplicates by place ID
+6.  Display in sortable table
 
 ### Category Filtering
 
 The app uses:
 
 - Category code: `FD6` (Restaurants)
-- Keyword filtering for bar-related terms in `category_name` and `place_name`
+- Substring matching on the `category_name` field against `BAR_CATEGORY_FILTER`
 
 ### Rate Limiting
 
@@ -289,14 +282,14 @@ To avoid API rate limits:
 
 **Possible Causes**:
 
-- Region doesn't contain any bar-related establishments
-- Keywords don't match the category names
+- Region doesn't contain any establishments matching the category filter
+- `BAR_CATEGORY_FILTER` is too specific
 - API rate limiting (wait a few minutes and try again)
 
 **Solutions**:
 
 - Try a different region (e.g., entertainment districts)
-- Adjust `BAR_KEYWORDS` in `config.js` to include more terms
+- Adjust `BAR_CATEGORY_FILTER` in `config.js` (e.g., shorten to "음식점" to debug)
 - Make region smaller to reduce API calls
 
 ### Incomplete Results
@@ -367,4 +360,8 @@ For issues related to:
 
 ---
 
-**Happy searching! 🍺**
+**Happy searching\! 🍺**
+
+---
+
+Made by Myophily, Assisted by Claude 4.5 sonnet, 2025
